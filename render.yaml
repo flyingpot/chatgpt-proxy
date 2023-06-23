@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: chatgpt-proxy
+    runtime: go
+    plan: free
+    buildCommand: go build
+    startCommand: ./chatgpt-proxy
