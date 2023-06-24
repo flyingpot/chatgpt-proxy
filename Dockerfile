@@ -1,3 +1,12 @@
-FROM golang
-RUN go install github.com/flyingpot/chatgpt-proxy@latest
-CMD [ "chatgpt-proxy" ]
+FROM golang as builder
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+FROM alpine:latest
+COPY --from=builder /app/main /app/main
+WORKDIR /app
+ENV PORT 8080
+EXPOSE $PORT
+CMD ["./main"]
