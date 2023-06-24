@@ -104,6 +104,10 @@ func init() {
 	gin.SetMode(gin.ReleaseMode)
 }
 
+func GetHandler() *gin.Engine {
+	return handler
+}
+
 func Run() {
 	endless.ListenAndServe(os.Getenv("HOST")+":"+PORT, handler)
 }
@@ -208,6 +212,16 @@ func proxy(c *gin.Context) {
 	defer response.Body.Close()
 	// Get status code
 	c.Status(response.StatusCode)
+	if response.StatusCode > 299 {
+		bodyBytes, err := io.ReadAll(response.Body)
+		if err != nil {
+			log.Printf("Could not read response body: %v\n", err)
+		} else {
+			log.Printf("Request failed with status code: %d, status: %s, body: %s\n", response.StatusCode, http.StatusText(response.StatusCode), string(bodyBytes))
+		}
+		return
+	}
+
 	c.Writer.Header().Set("Content-Type", "text/event-stream; charset=utf-8")
 
 	buf := make([]byte, 4096)
