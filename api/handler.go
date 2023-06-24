@@ -201,7 +201,7 @@ func proxy(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	request.Header.Set("Authorization", c.Request.Header.Get("X-Authorization"))
+	request.Header.Set("Authorization", GetAccessTokenFromHeader(c.Request.Header))
 	request.Header.Set("user-agent", userAgent)
 
 	response, err = client.Do(request)
@@ -246,6 +246,18 @@ func proxy(c *gin.Context) {
 		}
 	}
 }
+
+func GetAccessTokenFromHeader(header nethttp.Header) string {
+	// pandora will pass X-Authorization header
+	// but maybe other project will use Authorization header to pass access token
+	xAuth := header.Get("X-Authorization")
+	if xAuth == "" {
+		return header.Get("Authorization")
+	} else {
+		return xAuth
+	}
+}
+
 func Cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		method := c.Request.Method
