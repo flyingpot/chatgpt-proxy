@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	http "github.com/bogdanfinn/fhttp"
 	tlsclient "github.com/bogdanfinn/tls-client"
+	"github.com/flyingpot/funcaptcha"
 	"io"
 	"log"
 	nethttp "net/http"
@@ -148,17 +149,15 @@ func proxy(c *gin.Context) {
 		}
 
 		if strings.HasPrefix(cRequest.Model, gpt4Model) {
-			req, _ := http.NewRequest(http.MethodGet, arkoseTokenUrl, nil)
-			req.Header.Set("Content-Type", contentType)
-			resp, err := client.Do(req)
+			result, err := funcaptcha.GetToken(&funcaptcha.GetTokenOptions{
+				PKey: "35536E1E-65B4-4D96-9D97-6ADB7EFF8147",
+				SURL: "https://tcr9i.chat.openai.com",
+			})
 			if err != nil {
 				c.JSON(500, gin.H{"error": err.Error()})
 				return
 			}
-
-			responseMap := make(map[string]string)
-			json.NewDecoder(resp.Body).Decode(&responseMap)
-			cRequest.ArkoseToken = responseMap["token"]
+			cRequest.ArkoseToken = result.Token
 		}
 		jsonBytes, _ := json.Marshal(cRequest)
 		body = bytes.NewBuffer(jsonBytes)

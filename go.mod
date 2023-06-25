@@ -6,6 +6,7 @@ require (
 	github.com/acheong08/endless v0.0.0-20230615162514-90545c7793fd
 	github.com/bogdanfinn/fhttp v0.5.22
 	github.com/bogdanfinn/tls-client v1.3.12
+	github.com/flyingpot/funcaptcha v0.2.0
 	github.com/gin-gonic/gin v1.9.1
 )
 
