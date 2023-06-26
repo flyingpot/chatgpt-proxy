@@ -25,19 +25,16 @@ var (
 		tlsclient.WithNotFollowRedirects(),
 		tlsclient.WithCookieJar(jar), // create cookieJar instance and pass it as argument
 	}
-	client, _      = tlsclient.NewHttpClient(tlsclient.NewNoopLogger(), options...)
-	httpProxy      = os.Getenv("http_proxy")
-	arkoseTokenUrl = os.Getenv("ARKOSE_TOKEN_URL")
-	PORT           string
+	client, _ = tlsclient.NewHttpClient(tlsclient.NewNoopLogger(), options...)
+	httpProxy = os.Getenv("HTTP_PROXY")
+	port      string
 )
 
 const (
-	userAgent             = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
-	contentType           = "application/x-www-form-urlencoded"
-	defaultRole           = "user"
-	gpt4Model             = "gpt-4"
-	openaiHost            = "chat.openai.com"
-	defaultArkoseTokenUrl = "https://funcaptcha.vercel.app/api/token"
+	userAgent   = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+	defaultRole = "user"
+	gpt4Model   = "gpt-4"
+	openaiHost  = "chat.openai.com"
 )
 
 type CreateConversationRequest struct {
@@ -70,17 +67,17 @@ type Content struct {
 
 func init() {
 	if httpProxy != "" {
-		client.SetProxy(httpProxy)
-		println("Proxy set:" + httpProxy)
+		err := client.SetProxy(httpProxy)
+		if err != nil {
+			log.Printf("failed to set proxy: %s", httpProxy)
+		} else {
+			log.Printf("success set proxy: %s", httpProxy)
+		}
 	}
 
-	if arkoseTokenUrl == "" {
-		arkoseTokenUrl = defaultArkoseTokenUrl
-	}
-
-	PORT = os.Getenv("PORT")
-	if PORT == "" {
-		PORT = "9090"
+	port = os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
 	}
 	handler = gin.Default()
 	handler.Use(Cors())
@@ -98,12 +95,8 @@ func init() {
 	gin.SetMode(gin.ReleaseMode)
 }
 
-func GetHandler() *gin.Engine {
-	return handler
-}
-
 func Run() {
-	endless.ListenAndServe(os.Getenv("HOST")+":"+PORT, handler)
+	endless.ListenAndServe(os.Getenv("HOST")+":"+port, handler)
 }
 
 // entrypoint for vercel
@@ -115,20 +108,20 @@ func proxy(c *gin.Context) {
 	// Remove _cfuvid cookie from session
 	jar.SetCookies(c.Request.URL, []*http.Cookie{})
 
-	var request_url string
+	var requestUrl string
 	var err error
-	var request_method string
+	var requestMethod string
 	var request *http.Request
 	var response *http.Response
 
 	if c.Param("path") == "/conversation_limit" {
-		request_url = "https://" + openaiHost + "/public-api" + c.Param("path") + "?" + c.Request.URL.RawQuery
+		requestUrl = "https://" + openaiHost + "/public-api" + c.Param("path") + "?" + c.Request.URL.RawQuery
 	} else if c.Request.URL.RawQuery != "" {
-		request_url = "https://" + openaiHost + "/backend-api" + c.Param("path") + "?" + c.Request.URL.RawQuery
+		requestUrl = "https://" + openaiHost + "/backend-api" + c.Param("path") + "?" + c.Request.URL.RawQuery
 	} else {
-		request_url = "https://" + openaiHost + "/backend-api" + c.Param("path")
+		requestUrl = "https://" + openaiHost + "/backend-api" + c.Param("path")
 	}
-	request_method = c.Request.Method
+	requestMethod = c.Request.Method
 
 	var body io.Reader
 	if c.Param("path") == "/conversation" {
@@ -165,7 +158,7 @@ func proxy(c *gin.Context) {
 		body = c.Request.Body
 	}
 
-	request, err = http.NewRequest(request_method, request_url, body)
+	request, err = http.NewRequest(requestMethod, requestUrl, body)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return

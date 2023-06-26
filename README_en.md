@@ -4,9 +4,17 @@ This proxy can be used in [Pandora](https://github.com/pengzhile/pandora) projec
 
 ## Building and running
 
+### Build from source
+
 ```
 go build
 PORT=80 ./chatgpt-proxy
+```
+
+### Run with docker
+
+```
+docker run -ti -p 80:8080 flyingpot/chatgpt-proxy:latest
 ```
 
 ## Deploy

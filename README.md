@@ -18,8 +18,10 @@ PORT=8080 ./chatgpt-proxy
 ```
 
 ### Docker运行
+
+运行docker并映射到80端口
 ```
-docker run -ti -e PORT=8080 -p 8080:8080 flyingpot/chatgpt-proxy:latest
+docker run -ti -p 80:8080 flyingpot/chatgpt-proxy:latest
 ```
 
 ## 免费部署
