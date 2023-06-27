@@ -9,6 +9,8 @@
 
 当前版本不依赖第三方服务，基于项目[noahcoolboy/funcaptcha](https://github.com/noahcoolboy/funcaptcha)的算法重写了一个基于Golang的版本，用来获取arkose_token
 
+> **注意：当发现报错403时，请先尝试更新到最新版本**
+
 ## 运行
 
 ### 源码构建运行
@@ -27,6 +29,12 @@ docker run -ti -p 80:8080 flyingpot/chatgpt-proxy:latest
 ## 免费部署
 
 一些serverless提供商有免费额度，可以用来部署本项目，例如：
+
+### Koyeb
+
+点击下面的按钮一键部署
+
+[![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?type=docker&image=docker.io/flyingpot/chatgpt-proxy&name=chatgpt-proxy)
 
 ### Render
 
