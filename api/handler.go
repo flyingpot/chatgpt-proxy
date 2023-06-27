@@ -185,6 +185,8 @@ func proxy(c *gin.Context) {
 	}
 
 	c.Writer.Header().Set("Content-Type", "text/event-stream; charset=utf-8")
+	c.Writer.Header().Set("Cache-Control", "no-cache")
+	c.Writer.Header().Set("Connection", "keep-alive")
 
 	buf := make([]byte, 4096)
 	for {
