@@ -6,6 +6,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 FROM alpine:latest
 COPY --from=builder /app/main /app/main
-WORKDIR /app
+RUN apk add --no-cache tzdata
+ENV TZ=Asia/Shanghai
 EXPOSE 8080
-CMD ["./main"]
+CMD ["/app/main"]
