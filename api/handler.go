@@ -142,15 +142,12 @@ func proxy(c *gin.Context) {
 		}
 
 		if strings.HasPrefix(cRequest.Model, gpt4Model) {
-			result, err := funcaptcha.GetToken(&funcaptcha.GetTokenOptions{
-				PKey: "35536E1E-65B4-4D96-9D97-6ADB7EFF8147",
-				SURL: "https://tcr9i.chat.openai.com",
-			})
+			token, err := getSpecificToken()
 			if err != nil {
 				c.JSON(500, gin.H{"error": err.Error()})
 				return
 			}
-			cRequest.ArkoseToken = result.Token
+			cRequest.ArkoseToken = token
 		}
 		jsonBytes, _ := json.Marshal(cRequest)
 		body = bytes.NewBuffer(jsonBytes)
@@ -207,6 +204,22 @@ func proxy(c *gin.Context) {
 			break
 		}
 	}
+}
+
+// fails to get token
+func getGeneralToken() (string, error) {
+	result, err := funcaptcha.GetToken(&funcaptcha.GetTokenOptions{
+		PKey: "35536E1E-65B4-4D96-9D97-6ADB7EFF8147",
+		SURL: "https://tcr9i.chat.openai.com",
+	})
+	if err != nil {
+		return "", err
+	}
+	return result.Token, nil
+}
+
+func getSpecificToken() (string, error) {
+	return funcaptcha.GetOpenAIToken()
 }
 
 func GetAccessTokenFromHeader(header nethttp.Header) string {

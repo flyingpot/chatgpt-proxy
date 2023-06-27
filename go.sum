@@ -2,10 +2,10 @@ github.com/acheong08/endless v0.0.0-20230615162514-90545c7793fd h1:oIpfrRhD7Jus4
 github.com/acheong08/endless v0.0.0-20230615162514-90545c7793fd/go.mod h1:0yO7neMeJLvKk/B/fq5votDY8rByrOPDubpvU+6saKo=
 github.com/andybalholm/brotli v1.0.5 h1:8uQZIdzKmjc/iuPu7O2ioW48L81FgatrcpfFmiq/cCs=
 github.com/andybalholm/brotli v1.0.5/go.mod h1:fO7iG3H7G2nSZ7m0zPUDn85XEX2GTukHGRSepvi9Eig=
-github.com/bogdanfinn/fhttp v0.5.22 h1:U1jhZRtuaOanWWcm1WdMFnwMvSxUQgvO6berqAVTc5o=
-github.com/bogdanfinn/fhttp v0.5.22/go.mod h1:brqi5woc5eSCVHdKYBV8aZLbO7HGqpwyDLeXW+fT18I=
-github.com/bogdanfinn/tls-client v1.3.12 h1:jpNj7owMY/oULUQyAhAv6tRFkliFGLyr8Qx1ZZY/gp8=
-github.com/bogdanfinn/tls-client v1.3.12/go.mod h1:Q46nwIm0wPCweDM3XZcupxEIsTOWo3HVYSSsDj02/Qo=
+github.com/bogdanfinn/fhttp v0.5.23 h1:4Xb5OjYArB8GpnUw4A4r5jmt8UW0/Cvey3R9nS2dC9U=
+github.com/bogdanfinn/fhttp v0.5.23/go.mod h1:brqi5woc5eSCVHdKYBV8aZLbO7HGqpwyDLeXW+fT18I=
+github.com/bogdanfinn/tls-client v1.4.0 h1:ptZmkvVyRTjMFPc3Kevholf+ioePkCM5oj3qkOmOuoM=
+github.com/bogdanfinn/tls-client v1.4.0/go.mod h1:lgtqsHjoJYQMPz6H08bc8t30bmUaYnVjwtfVEzMGJDs=
 github.com/bogdanfinn/utls v1.5.16 h1:NhhWkegEcYETBMj9nvgO4lwvc6NcLH+znrXzO3gnw4M=
 github.com/bogdanfinn/utls v1.5.16/go.mod h1:mHeRCi69cUiEyVBkKONB1cAbLjRcZnlJbGzttmiuK4o=
 github.com/bytedance/sonic v1.5.0/go.mod h1:ED5hyg4y6t3/9Ku1R6dU/4KyJ48DZ4jPhfY1O2AihPM=
@@ -18,8 +18,8 @@ github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ3
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/flyingpot/funcaptcha v0.2.0 h1:9RgHyl3jz+VbJcoAKNfmDi+3koDdYz1Yf2oseyTPSyU=
-github.com/flyingpot/funcaptcha v0.2.0/go.mod h1:4gXAWv0LSk/VGVw6Zd/IaUTLYWVL02kahGbgeBHyELk=
+github.com/flyingpot/funcaptcha v0.2.2 h1:vt4gM5l2UXxCcYOrciK1O+BMKMhvo5FPBxp56eAnin0=
+github.com/flyingpot/funcaptcha v0.2.2/go.mod h1:OyVM3Y1gimE2ooxkQycqF9T/XHJp1ZnSZIifF8KumIU=
 github.com/gabriel-vasile/mimetype v1.4.2 h1:w5qFW6JKBz9Y393Y4q372O9A7cUSequkh1Q7OhCmWKU=
 github.com/gabriel-vasile/mimetype v1.4.2/go.mod h1:zApsH/mKG4w07erKIaJPFiX0Tsq9BFQgN3qGY5GnNgA=
 github.com/gin-contrib/sse v0.1.0 h1:Y/yl/+YNO8GZSjAhjMsSuLt29uWRFHdHYUb5lYOV9qE=
