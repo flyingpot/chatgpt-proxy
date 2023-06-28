@@ -1,6 +1,8 @@
 # ChatGPT Proxy
 
-本项目可以作为以下几种ChatGPT前端的代理：
+> 本项目不保证稳定性，并且使用本项目可能违反了OpenAI的使用条款，请评估风险后再使用
+
+chatgpt-proxy可以作为以下几种ChatGPT前端的代理：
 
 - [pengzhile/pandora](https://github.com/pengzhile/pandora)
 - [Chanzhaoyu/chatgpt-web](https://github.com/Chanzhaoyu/chatgpt-web)
@@ -41,10 +43,6 @@ docker run -ti -p 80:8080 flyingpot/chatgpt-proxy:latest
 点击下面的按钮一键部署，缺点是免费版本冷启动比较慢
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/flyingpot/chatgpt-proxy)
-
-### Vercel
-
-当前Vercel上部署存在问题，暂时不可用
 
 ## 致谢
 
