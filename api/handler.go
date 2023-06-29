@@ -3,9 +3,9 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/acheong08/funcaptcha"
 	http "github.com/bogdanfinn/fhttp"
 	tlsclient "github.com/bogdanfinn/tls-client"
-	"github.com/flyingpot/funcaptcha"
 	"io"
 	"log"
 	nethttp "net/http"
@@ -142,7 +142,7 @@ func proxy(c *gin.Context) {
 		}
 
 		if strings.HasPrefix(cRequest.Model, gpt4Model) {
-			token, err := funcaptcha.GetOpenAITokenV1()
+			token, err := funcaptcha.GetOpenAIToken()
 			if err != nil {
 				c.JSON(500, gin.H{"error": err.Error()})
 				return
