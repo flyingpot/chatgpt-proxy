@@ -10,7 +10,6 @@ import (
 	"math/rand"
 	"net/url"
 	"strconv"
-	"strings"
 )
 
 const DefaultUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
@@ -36,19 +35,17 @@ func GetOpenAIToken(client tlsclient.HttpClient) (string, error) {
 	formData := url.Values{
 		"bda": {GetBda(DefaultUserAgent,
 			fmt.Sprintf("%s/v2/%s/1.5.2/enforcement.%s.html",
-				surl, pkey, Random()), "")},
+				surl, pkey, Random()), "https://tcr9i.chat.openai.com/fc/gt2/public_key/35536E1E-65B4-4D96-9D97-6ADB7EFF8147")},
 		"public_key":   {"35536E1E-65B4-4D96-9D97-6ADB7EFF8147"},
 		"site":         {"https://chat.openai.com"},
-		"userbrowser":  {DefaultUserAgent},
+		"userbrowser":  {"Mozilla%2F5.0%20(Macintosh%3B%20Intel%20Mac%20OS%20X%2010_15_7)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F114.0.0.0%20Safari%2F537.36"},
 		"capi_version": {"1.5.2"},
 		"capi_mode":    {"lightbox"},
 		"style_theme":  {"default"},
 		"rnd":          {strconv.FormatFloat(rand.Float64(), 'f', -1, 64)},
 	}
 
-	form := strings.ReplaceAll(formData.Encode(), "+", "%20")
-	form = strings.ReplaceAll(form, "%28", "(")
-	form = strings.ReplaceAll(form, "%29", ")")
+	form := formData.Encode()
 	req, err := http.NewRequest("POST", surl+"/fc/gt2/public_key/"+pkey, bytes.NewBufferString(form))
 	if err != nil {
 		return "", err
