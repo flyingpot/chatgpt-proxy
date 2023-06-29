@@ -3,9 +3,9 @@ package api
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/acheong08/funcaptcha"
 	http "github.com/bogdanfinn/fhttp"
 	tlsclient "github.com/bogdanfinn/tls-client"
+	token "github.com/flyingpot/chatgpt-proxy/token"
 	"io"
 	"log"
 	nethttp "net/http"
@@ -21,7 +21,7 @@ var (
 	jar     = tlsclient.NewCookieJar()
 	options = []tlsclient.HttpClientOption{
 		tlsclient.WithTimeoutSeconds(360),
-		tlsclient.WithClientProfile(tlsclient.Safari_IOS_16_0),
+		tlsclient.WithClientProfile(tlsclient.Chrome_112),
 		tlsclient.WithNotFollowRedirects(),
 		tlsclient.WithCookieJar(jar), // create cookieJar instance and pass it as argument
 	}
@@ -142,12 +142,12 @@ func proxy(c *gin.Context) {
 		}
 
 		if strings.HasPrefix(cRequest.Model, gpt4Model) {
-			token, err := funcaptcha.GetOpenAIToken()
+			arkoseToken, err := token.GetOpenAIToken(client)
 			if err != nil {
 				c.JSON(500, gin.H{"error": err.Error()})
 				return
 			}
-			cRequest.ArkoseToken = token
+			cRequest.ArkoseToken = arkoseToken
 		}
 		jsonBytes, _ := json.Marshal(cRequest)
 		body = bytes.NewBuffer(jsonBytes)
