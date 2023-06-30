@@ -3,14 +3,15 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/acheong08/funcaptcha"
 	http "github.com/bogdanfinn/fhttp"
 	tlsclient "github.com/bogdanfinn/tls-client"
-	token "github.com/flyingpot/chatgpt-proxy/token"
 	"io"
 	"log"
 	nethttp "net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/acheong08/endless"
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,7 @@ var (
 	jar     = tlsclient.NewCookieJar()
 	options = []tlsclient.HttpClientOption{
 		tlsclient.WithTimeoutSeconds(360),
-		tlsclient.WithClientProfile(tlsclient.Chrome_112),
+		tlsclient.WithClientProfile(tlsclient.Firefox_110),
 		tlsclient.WithNotFollowRedirects(),
 		tlsclient.WithCookieJar(jar), // create cookieJar instance and pass it as argument
 	}
@@ -74,6 +75,25 @@ func init() {
 			log.Printf("success set proxy: %s", httpProxy)
 		}
 	}
+
+	funcaptcha.SetTLSClient(&client)
+	go func() {
+		var newclient tlsclient.HttpClient
+		for {
+			options := []tlsclient.HttpClientOption{
+				tlsclient.WithTimeoutSeconds(360),
+				tlsclient.WithClientProfile(tlsclient.Firefox_110),
+				tlsclient.WithNotFollowRedirects(),
+				tlsclient.WithCookieJar(tlsclient.NewCookieJar()), // create cookieJar instance and pass it as argument
+			}
+			newclient, _ = tlsclient.NewHttpClient(tlsclient.NewNoopLogger(), options...)
+			if httpProxy != "" {
+				newclient.SetProxy(httpProxy)
+			}
+			funcaptcha.SetTLSClient(&newclient)
+			time.Sleep(10 * time.Minute)
+		}
+	}()
 
 	port = os.Getenv("PORT")
 	if port == "" {
@@ -142,9 +162,14 @@ func proxy(c *gin.Context) {
 		}
 
 		if strings.HasPrefix(cRequest.Model, gpt4Model) {
-			arkoseToken, err := token.GetOpenAIToken(client)
+			arkoseToken, err := funcaptcha.GetOpenAIToken()
 			if err != nil {
 				c.JSON(500, gin.H{"error": err.Error()})
+				return
+			}
+			if !strings.Contains(arkoseToken, "|rid=") || !strings.Contains(arkoseToken, "|sup=") {
+				log.Printf("wrong arkose token: %s", arkoseToken)
+				c.JSON(500, gin.H{"error": "wrong arkose token"})
 				return
 			}
 			cRequest.ArkoseToken = arkoseToken
