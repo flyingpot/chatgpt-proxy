@@ -10,6 +10,7 @@ require (
 )
 
 require (
+	github.com/acheong08/funcaptcha v0.2.1-0.20230630052018-e8203152e1cc // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/bogdanfinn/utls v1.5.16 // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
