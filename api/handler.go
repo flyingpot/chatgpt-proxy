@@ -167,11 +167,6 @@ func proxy(c *gin.Context) {
 				c.JSON(500, gin.H{"error": err.Error()})
 				return
 			}
-			if !strings.Contains(arkoseToken, "|rid=") || !strings.Contains(arkoseToken, "|sup=") {
-				log.Printf("wrong arkose token: %s", arkoseToken)
-				c.JSON(500, gin.H{"error": "wrong arkose token"})
-				return
-			}
 			cRequest.ArkoseToken = arkoseToken
 		}
 		jsonBytes, _ := json.Marshal(cRequest)
